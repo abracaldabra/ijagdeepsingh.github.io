@@ -6,7 +6,6 @@ define([
 ], function($, _, Backbone){
 	// jQuery, Underscore, Backbone
 
-	return {
+	return {};
 		// What we return here will be used in other modules
-	};
 });

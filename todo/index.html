@@ -2,10 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Google integrated todo list</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap-combined.min.css">
-    <link rel="stylesheet" type="text/css" href="css/flat-ui.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script type="text/javascript" data-main="js/main" src="js/libs/require/require.js"></script>
   </head>
@@ -17,149 +18,8 @@
         </div>
       </div>
       <div class="row-fluid">
-        <div class="span4 auth-button">
-        </div>
+        <div class="span4 oauth-button"></div>
       </div>
     </div>
-
-    <script type="text/javascript">
-     
-/*
-      (function($) {
-        var AuthButton = Backbone.View.extend({
-          el: $('.auth-button'),
-          initialize: function() {
-            _.bindAll(this, 'render');
-            this.render();
-            console.log('initialize');
-          },
-          render: function() {
-            $(this.el).append('<button class="btn btn-block btn-danger" id="authorize"><span class="fui-lock"></span>Authorize app</button>');
-            console.log('render');
-          },
-          events: {
-            'click button#authorize': 'authorize'
-          },
-          authorize: function() {
-            console.log('hello');
-            // Create a new OAuth object and call the auth() method to start the process.
-            var Google = new Backbone.OAuth(Backbone.OAuth.configs.Google);
-            Google.auth();
-          }
-        });
-
-        var AppRouter = Backbone.Router.extend({
-          routes: {
-            "access_token=:token": "getToken"
-          }
-        });
-
-        var list = new AuthButton();
-        var app_router = new AppRouter();
-        app_router.on('route:getToken', function(token) {
-          alert(token);
-        });
-        // Start Backbone history a necessary step for bookmarkable URL's
-        Backbone.history.start();
-      })(jQuery);
-
-      (function(window) {
-        "use strict";
-        // Alias backbone, underscore and jQuery.
-        var Backbone = window.Backbone,
-                _ = window._,
-                $ = window.$;
-        // Parse hash helper method used for parsing location.hash.
-        var parseHash = function(hash) {
-          var params = {},
-                  queryString = hash.substring(1),
-                  regex = /([^&=]+)=([^&]*)/g, m;
-          while (m = regex.exec(queryString)) {
-            params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-          }
-          return params;
-        }
-
-        //============================================================================
-
-        // Extend Backbone with OAuth functionality.
-        Backbone.OAuth || (Backbone.OAuth = {});
-        // The base OAuth class.
-        Backbone.OAuth = function(options) {
-
-          // Override any default option with the options passed to the constructor.
-          _.extend(this, options);
-          // Make the onRedirect function publicy available.
-          _.bind(this.onRedirect, this);
-          window.OAuthRedirect = this.onRedirect;
-        };
-        // Inject methods and properties.
-        _.extend(Backbone.OAuth.prototype, {
-          // Default for most applications.
-          access_token_name: 'access_token',
-          // Configures the auth dialog url.
-          setupAuthUrl: function() {
-            var url = this.auth_url + '?client_id=' + this.client_id
-                    + '&redirect_uri=' + this.redirect_url
-                    + '&response_type=token';
-            if (this.scope)
-              url += '&scope=' + this.scope;
-            if (this.state)
-              url += '&state=' + this.state;
-            return url;
-          },
-          // Open the OAuth dialog and wait for a redirect.
-          auth: function() {
-            if (!this.access_token_name)
-              throw new Error('No access token name given.');
-            if (!this.auth_url)
-              throw new Error('No auth url given.');
-            if (!this.redirect_url)
-              throw new Error('No redirect url given.');
-            this.dialog = window.open(this.setupAuthUrl(), "auth google");
-          },
-          // Called on redirection inside the OAuth dialog window. This indicates,
-          // that the dialog auth process has finished. It has to be checked, if
-          // the auth was successful or not.
-          onRedirect: function(hash) {
-            var params = parseHash(location.hash);
-            if (this.authSuccess(params)) {
-              this.onSuccess(params);
-            } else {
-              this.onError(params);
-            }
-          },
-          // Detect if we have a successful auth.
-          authSuccess: function(params) {
-            return params[this.access_token_name];
-          },
-          // These following methods have to be implemented by the OAuth application.
-          onError: function() {
-          },
-          onSuccess: function() {
-          }
-
-        });
-
-        //============================================================================
-
-        Backbone.OAuth.configs = {
-          Google: {
-            auth_url: 'https://accounts.google.com/o/oauth2/auth',
-            scope: 'https://www.googleapis.com/auth/calendar',
-            response_type: 'code',
-            redirect_url: 'http://ijagdeep.com/projects/todo-list/',
-            client_id: '34741868873.apps.googleusercontent.com'
-          }
-        };
-        //============================================================================
-
-      })(this);
-
-*/
-    </script>
-
-
-
   </body>
 </html>

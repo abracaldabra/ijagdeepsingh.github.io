@@ -8,7 +8,6 @@ define([
 	var init = function(){
 		//init router module
 		Router.init();
-		
 	}
 	return {
 		init: init
