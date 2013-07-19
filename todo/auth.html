@@ -18,7 +18,11 @@
         window.location = params['state'] + '#/errorlogin/200';
       } else {
           if(typeof(Storage)!=="undefined"){
+            // Put the object into storage
             localStorage.setItem('access_token', JSON.stringify(params));
+            // Retrieve the object from storage
+            var access_token = localStorage.getItem('access_token');
+            console.log('access_token: ', JSON.parse(access_token));
             window.location = params['state'] + '#/home';
           } else{
             // Browser doesn't support local storage
