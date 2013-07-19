@@ -19,5 +19,5 @@ require.config({
 });
 
 require(['app'], function(App){
-	App.init();
+	window.todo = new App();
 });

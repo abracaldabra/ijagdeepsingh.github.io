@@ -11,10 +11,10 @@
       }
       console.log(params['access_token']);
       // Put the object into storage
-      localStorage.setItem('access_token', JSON.stringify(params));
+      window.localStorage.setItem('access_token', JSON.stringify(params));
       // Retrieve the object from storage
-      var access_token = localStorage.getItem('access_token');
-     // console.log('access_token: ', JSON.parse(access_token));
+      var access_token = window.localStorage.getItem('access_token');
+      console.log('access_token: ', JSON.parse(access_token));
     })();
     </script>
   </head>

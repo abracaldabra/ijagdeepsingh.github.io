@@ -4,7 +4,7 @@ define([], function() {
     'state': '/todo/',
   	'client_id': '34741868873.apps.googleusercontent.com',
   	'scope': 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
-  	'redirect_uri': 'http://jagdeep.me/todo/auth.html',
+  	'redirect_uri': 'http://localhost/todo/auth.html',
   	'response_type': 'token', // token or code
     'approval_prompt': 'force' // force or auto
   };
