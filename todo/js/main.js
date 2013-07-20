@@ -18,6 +18,6 @@ require.config({
 
 });
 
-require(['app'], function(App) {
+require(['app'], function(App){
 	window.todo = new App();
 });
