@@ -11,7 +11,7 @@ define([
 			this.render();
 		},
 		render: function(){
-			$(this.el).html('<p>You are signed in with google.com</p>');			
+			$(this.el).html('<p>You are logged in using Google</p>');			
 		},
 		events: {
 			'click button#auth': 'authorize'

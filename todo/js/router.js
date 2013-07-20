@@ -4,20 +4,20 @@ define([
 	'underscore',
 	'backbone',
 	'views/home/HomeView'
-], function($, _, Backbone, HomeView){
+], function($, _, Backbone, HomeView) {
 	var AppRouter = Backbone.Router.extend({
 		routes: {
 			// Define some URL routes
 			'errorlogin/:errorcode': 'errorLogin',
-			'*actions' : 'defaultAction'
+			'*actions': 'defaultAction'
 
 		}
 	});
 
-	var _init = function(){
+	var _init = function() {
 		var app_router = new AppRouter;
 		// Implements addNewEvent route
-		app_router.on('route:errorLogin', function(errorcode){
+		app_router.on('route:errorLogin', function(errorcode) {
 			// TODO
 			// Load home view
 			var home = new HomeView();
@@ -27,7 +27,7 @@ define([
 		});
 
 		// Implements defaultAction route
-		app_router.on('route:defaultAction', function(actions){
+		app_router.on('route:defaultAction', function(actions) {
 			// Load home view
 			var home = new HomeView();
 			home.render();
@@ -39,6 +39,6 @@ define([
 	return {
 		// This will return an Object
 		// which has a function init (copy of _init) 
-		init: _init 
+		init: _init
 	};
 });

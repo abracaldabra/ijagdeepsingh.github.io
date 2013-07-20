@@ -1,9 +1,9 @@
 //Filename: boilerplate.js
 define([
-	'jquery', 
-	'underscore', 
+	'jquery',
+	'underscore',
 	'backbone'
-], function($, _, Backbone){
+], function($, _, Backbone) {
 	// jQuery, Underscore, Backbone
 
 	return {}; // Returning an Object

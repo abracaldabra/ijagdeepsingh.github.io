@@ -17,7 +17,7 @@
         console.log(typeof(params['error']));
         window.location = params['state'] + '#/errorlogin/200';
       } else {
-          if(typeof(Storage)!=="undefined"){
+          if(typeof(Storage)!== 'undefined'){
             // Clear old data stored in localstorage
             window.localStorage.clear();
             // Put the object into storage
