@@ -42,6 +42,8 @@ define(['config'], function(config) {
           authTimeout = (authResult.expires_in - 5 * 60) * 1000;
           setTimeout(checkAuth, authTimeout);
         }
+        // Hide loading view
+        app.views.loading.$el.hide();
         // Hide login view
         app.views.auth.$el.hide();
         // Show app view
@@ -53,6 +55,8 @@ define(['config'], function(config) {
           // TODO: Load error login view
           console.error('Unable to sign in:', authResult.error);
         }
+        // Hide loading view
+        app.view.loading.$el.hide();
         // Otherwise just load login view
         app.views.auth.$el.show();
         console.log('Access denied or User not logged in');

@@ -3,13 +3,16 @@ define([
   'gapi',
   'routes',
   'views/app', 
-  'views/auth'
+  'views/auth',
+  'views/loading'
 ],
 
-function(ApiManager, Routes, AppView, AuthView) {
+function(ApiManager, Routes, AppView, AuthView, LoadingView) {
   var App = function() {
     this.routes = new Routes();
 
+    this.views.loading = new LoadingView();
+    this.views.loading.render();
     this.views.app = new AppView();
     this.views.app.render();
     this.views.auth = new AuthView(this);
@@ -25,7 +28,7 @@ function(ApiManager, Routes, AppView, AuthView) {
       var self = this;
       this.apiManager = new ApiManager(this);
       this.apiManager.on('ready', function() {
-        console.log('app ready');
+        console.log('App ready');
       });
     }
   };
