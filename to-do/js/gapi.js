@@ -56,7 +56,7 @@ define(['config'], function(config) {
           console.error('Unable to sign in:', authResult.error);
         }
         // Hide loading view
-        app.view.loading.$el.hide();
+        app.views.loading.$el.hide();
         // Otherwise just load login view
         app.views.auth.$el.show();
         console.log('Access denied or User not logged in');
