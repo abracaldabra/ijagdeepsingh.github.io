@@ -1,0 +1,35 @@
+
+<fieldset>
+  <h2>Add new event</h2>
+  <div class="control-group">
+    <h4>Summary</h4>
+    <textarea autofocus class="input-block-level" name="summary" id="summary" maxlength="80" placeholder="Write something about event"></textarea>
+  </div>
+  <div class="control-group">
+    <h4>Priority</h4>
+    <label class="radio checked">
+      <span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span>
+      <input type="radio" name="priority" id="priority1" value="low" data-toggle="radio" checked="checked">Low</label>
+    <label class="radio">
+      <span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span>
+      <input type="radio" name="priority" id="priority2" value="medium" data-toggle="radio">Medium</label>
+    <label class="radio">
+      <span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span>
+      <input type="radio" name="priority" id="priority3" value="high" data-toggle="radio">High</label>
+  </div>
+  <div class="control-group">
+    <h4>Time</h4>
+    <label class="radio checked">
+      <span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span>
+      <input type="radio" name="time" id="time1" value="15" data-toggle="radio" checked="checked">15 Minutes</label>
+    <label class="radio">
+      <span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span>
+      <input type="radio" name="time" id="time2" value="30" data-toggle="radio">30 Minutes</label>
+    <label class="radio">
+      <span class="icons"><span class="first-icon fui-radio-unchecked"></span><span class="second-icon fui-radio-checked"></span></span>
+      <input type="radio" name="time" id="time3" value="60" data-toggle="radio">1 Hour</label>
+  </div>
+  <div class="control-group">
+    <button type="submit" class="btn btn-primary" id="create-event"><span class="fui-plus"></span> Create event</button>
+  </div>
+</fieldset>
