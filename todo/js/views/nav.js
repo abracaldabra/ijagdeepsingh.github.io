@@ -7,10 +7,10 @@ define(['text!templates/nav.html'], function(navTemplate) {
     initialize: function() {
     },
     render: function() {
-      this.$el.html(this.template());
-      return this;
+      this.$el.html(this.template())
+      return this
     }
-  });
+  })
 
-  return NavView;
-});
+  return NavView
+})

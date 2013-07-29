@@ -4,7 +4,9 @@ require.config({
     text: 'libs/text/text	',
     jquery: 'libs/jquery/jquery-min',
     underscore: 'libs/underscore/underscore-min',
-    backbone: 'libs/backbone/backbone-min'
+    backbone: 'libs/backbone/backbone-min',
+    moment: 'libs/moment/moment',
+    radio: 'libs/flat-ui/radio'
   },
   shim: {
     'backbone': {
@@ -19,11 +21,14 @@ require.config({
     },
     'app': {
       deps: ['underscore', 'backbone']
+    },
+    'radio': {
+      deps: ['jquery']
     }
   }
 
-});
+})
 
-require(['app', 'js/libs/flat-ui/radio.js'], function(App) {
-  window.todoApp = new App();
-});
+require(['app'], function(App) {
+  window.todoApp = new App()
+})

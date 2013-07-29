@@ -5,13 +5,13 @@ define(['text!templates/user.html'], function(userTemplate) {
     // Cache the templates
     template: _.template(userTemplate),
     initialize: function() {
-      this.render();
+      this.render()
     },
     render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
-      return this;
+      this.$el.html(this.template(this.model.toJSON()))
+      return this
     }
-  });
+  })
 
-  return UserView;
-});
+  return UserView
+})

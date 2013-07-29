@@ -4,21 +4,21 @@ define(['views/event'], function(EventView) {
     tagName: 'ul',
     className: 'nav nav-tabs nav-stacked eventlist',
     initialize: function() {
-      this.collection.on('add', this.renderEvent, this);
+      this.collection.on('add', this.renderEvent, this)
     },
     render: function() {
       var $el = $(this.el),
-              self = this;
+              self = this
 
-      return this;
+      return this
     },
     renderEvent: function(model) {
       var eventView = new EventView({
         model: model
-      });
-      this.$el.append(eventView.render().el);
+      })
+      this.$el.append(eventView.render().el)
     }
-  });
+  })
 
-  return EventListView;
-});
+  return EventListView
+})

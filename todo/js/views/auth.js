@@ -4,20 +4,20 @@ define(['text!templates/auth.html'], function(authTemplate) {
     el: $('.auth-view'),
     template: _.template(authTemplate),
     initialize: function(_app) {
-      this.app = _app;
+      this.app = _app
     },
     render: function() {
-      this.$el.html(this.template());
-      this.$el.hide();
-      return this;
+      this.$el.html(this.template())
+      this.$el.hide()
+      return this
     },
     events: {
       'click button#auth-btn': 'authorize'
     },
     authorize: function(event) {
-      this.app.apiManager.checkAuth();
+      this.app.apiManager.checkAuth()
     }
-  });
+  })
 
-  return AuthView;
-});
+  return AuthView
+})

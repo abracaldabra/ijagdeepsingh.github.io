@@ -10,21 +10,21 @@ define([], function() {
     },
     add: function() {
       if (typeof(todoApp) === "undefined") {
-        this.navigate('home');
-        return false;
+        this.navigate('home')
+        return false
       }
-      $('#home').removeClass('active');
-      $('#add').addClass('active');
-      $('.app-view').hide();
-      $('.add-event-view').show();
+      $('#home').removeClass('active')
+      $('#add').addClass('active')
+      $('.app-view').hide()
+      $('.add-event-view').show()
     },
     home: function() {
-      $('#add').removeClass('active');
-      $('#home').addClass('active');
-      $('.add-event-view').hide();
-      $('.app-view').show();
+      $('#add').removeClass('active')
+      $('#home').addClass('active')
+      $('.add-event-view').hide()
+      $('.app-view').show()
     }
-  });
+  })
 
-  return Routes;
-});
+  return Routes
+})
