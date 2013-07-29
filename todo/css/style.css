@@ -3,8 +3,6 @@ html, .container-fluid{
 }
 body{
   border-top:5px solid #3a87ad;
-  margin: 0px;
-  padding: 0px;
 }
 .nav a{
   text-decoration: none;
