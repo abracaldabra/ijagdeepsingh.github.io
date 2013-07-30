@@ -1,11 +1,11 @@
 //Filename: main.js
 require.config({
   paths: {
-    text: 'libs/text/text	',
+    text: 'libs/text/text',
     jquery: 'libs/jquery/jquery-min',
     underscore: 'libs/underscore/underscore-min',
     backbone: 'libs/backbone/backbone-min',
-    moment: 'libs/moment/moment',
+    moment: 'libs/moment/moment.min',
     radio: 'libs/flat-ui/radio'
   },
   shim: {
