@@ -30,10 +30,8 @@ define(['text!templates/event.html', 'moment'], function(template) {
         data.summary = 'No title'
       }
 
-      // If event has no priority set it to low
-      if (typeof(data.priority) === 'undefined') {
-        data.priority = 'low'
-      } else if (data.priority !== 'high' && data.priority !== 'medium' && data.priority !== 'low') {
+      // Check if event has no priority
+      if (data.priority !== 'high' && data.priority !== 'medium' && data.priority !== 'low') {
         data.priority = 'none'
       }
 

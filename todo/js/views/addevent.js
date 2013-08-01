@@ -15,42 +15,100 @@ define(['text!templates/addevent.html', 'radio', 'moment'], function(template) {
       return this
     },
     create: function() {
-      var data = {}, request, requestContent = {}, options = {}, dmin, dmax, email
+      var data = {}, request, requestContent = {}, options = {}, self = this
 
-      this.validate()
+      if (!this.validate())
+        return false
 
       // Get all inputs
       data.summary = $('#summary').val()
       data.priority = $('input[name=priority]:checked').val()
       data.duration = $('input[name=time]:checked').val()
 
-      console.log(data.summary + ":" + data.priority + ":" + data.duration)
+      // Get email from user model
+      data.email = todoApp.models.user.get('email')
 
-      email = todoApp.models.user.get('email')
+      // Create timeMin and timeMax moments
+      data.timeMin = self.checkTimeConstraints(moment(), data.duration)
+      data.timeMin.seconds(0)
+      data.timeMin.milliseconds(0)
+      console.log(data.timeMin.format())
 
-      data.timeMin = new moment()
       data.timeMax = new moment()
+      data.timeMax.seconds(0)
+      data.timeMax.milliseconds(0)
       data.timeMax.add('M', 1)
 
+      // Based on priority schedule task from day 2 or 7
+      // Add 2 days in timeMin if medium, add 7 if low
       if (data.priority === "low")
-        dmin.add('d', 7)
+        data.timeMin.add('d', 7)
       else if (data.priority === "medium")
-        dmin.add('d', 2)
+        data.timeMin.add('d', 2)
 
       requestContent.timeMin = data.timeMin.format()
       requestContent.timeMax = data.timeMax.format()
-      requestContent.items = [{
-          id: email
-        }]
       requestContent.fields = 'timeMin, timeMax, calendars'
+      requestContent.items = [{
+          id: data.email
+        }]
 
       // Callback for http request
       options.success = function(res) {
-        console.log(res)
         if (typeof(res.calendars) === "undefined") {
           // This calendar has no events
           console.log('No events found')
-          this.scheduleEvent(data);
+          self.scheduleEvent(data)
+          return false
+        } else {
+
+          busy = res.calendars[data.email].busy,
+                  l = busy.length
+          // ========================== start
+          var schedule = true, i = 0
+          while (data.timeMax.diff(data.timeMin, 'm') > 0 && schedule) {
+
+            // Step 1
+            var start = new moment(busy[i].start),
+                    end = new moment(busy[i].end)
+
+            if (start.isSame(data.timeMin)) {
+              // Event running
+              console.log('event running. set timeMin = end')
+              data.timeMin = self.checkTimeConstraints(end, data.duration)
+              // TODO
+              if (i < l) {
+                i++
+              }
+            } else {
+              // Step 2
+              // Event in future
+              // Check if time remaining is greater than event duration
+              if (start.diff(data.timeMin, 'm') >= data.duration) {
+                // We have time for event
+                // Schedule it now
+                console.log('We have time schedule event now')
+                self.scheduleEvent(data)
+                schedule = false
+                return false
+              } else {
+                // Step 3
+                // We dont have time for event
+                // Set timeMin = end
+                console.log('we dont have time. set timeMin = end')
+                data.timeMin = self.checkTimeConstraints(end, data.duration)
+                // TODO
+                if (i < l) {
+                  i++
+                }
+              }
+            }
+
+          }
+
+          console.log('nothing found')
+          // ========================== end
+
         }
       }
 
@@ -69,11 +127,10 @@ define(['text!templates/addevent.html', 'radio', 'moment'], function(template) {
         $('#summary').parent().addClass('error')
         $('#summary').focus()
         return false
-      }
-      // Clear previous error
-      if ($('#summary').parent().hasClass('error')) {
+      } else if ($('#summary').parent().hasClass('error')) {
         $('#summary').parent().removeClass('error')
       }
+      return true
     },
     /*
      * Checks the validation of time and duraction of event
@@ -157,7 +214,7 @@ define(['text!templates/addevent.html', 'radio', 'moment'], function(template) {
      * @params Object data
      */
     scheduleEvent: function(data) {
-
+      console.log('Scheduled at: ' + data.timeMin.format())
     }
   })
 

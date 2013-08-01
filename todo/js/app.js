@@ -67,22 +67,26 @@ define([
                     self.views.nav.render()
 
                     // Loading events starts
-                    $('.app-view').html('<div class="text-center"><i class="icon-spinner icon-spin icon-large"></i> Loading events...</div>')
+                    self.fetchEvents()
 
-                    self.collections.events.fetch({
-                      success: function(collection, res, req) {
-                        $('.app-view').html(self.views.eventList.render().$el)
-                        console.log(res)
-                      },
-                      data: {
-                        calendarId: self.models.user.get('email'),
-                        orderBy: 'startTime',
-                        singleEvents: true,
-                        fields: 'items(id, start, end, summary, status, description, extendedProperties)'
-                      }
-                    })
                   }
                 })
+              })
+            },
+            fetchEvents: function() {
+              var self = this
+              $('.app-view').html('<div class="text-center"><i class="icon-spinner icon-spin icon-large"></i> Loading events...</div>')
+              self.collections.events.fetch({
+                success: function(collection, res, req) {
+                  $('.app-view').html(self.views.eventList.render().$el)
+                  console.log(res)
+                },
+                data: {
+                  calendarId: self.models.user.get('email'),
+                  orderBy: 'startTime',
+                  singleEvents: true,
+                  fields: 'items(id, start, end, summary, status, description, extendedProperties)'
+                }
               })
             }
           }
