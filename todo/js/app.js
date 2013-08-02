@@ -79,7 +79,12 @@ define([
               $('.app-view').html('<div class="text-center"><i class="icon-spinner icon-spin icon-large"></i> Loading events...</div>')
               self.collections.events.fetch({
                 success: function(collection, res, req) {
-                  $('.app-view').html(self.views.eventList.render().$el)
+                  if (!todoApp.collections.events.size()) {
+                    // Show no event error
+                    $('.app-view').html('<div class="alert alert-error"><strong>Oh snap!</strong> No events found. <a href="#/add"><span class="fui-plus"></span> Add new events</a></div>')
+                  } else {
+                    $('.app-view').html(self.views.eventList.render().$el)
+                  }
                 },
                 error: function(msg) {
                   $('.app-view').html('<div class="alert alert-error"><strong>Oh snap!</strong> No events found. <a href="#/add"><span class="fui-plus"></span> Add new events</a></div>')
