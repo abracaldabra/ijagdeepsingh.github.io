@@ -90,7 +90,6 @@ define(['config'], function(config) {
           setTimeout(checkGAPI, 100)
         }
       }
-
       checkGAPI()
     })
   }
@@ -99,19 +98,11 @@ define(['config'], function(config) {
     var requestContent = {}, request
     options || (options = {})
 
-    console.log(method + ',' + model.url)
-
-    switch (model.url) {
-      case 'events':
-
-        break
-
-      case 'userinfo':
-        requestContent.path = 'oauth2/v3/' + model.url
-        request = gapi.client.request(requestContent)
-        Backbone.gapiRequest(request, method, model, options)
-        return
-        break
+    if (model.url === 'userinfo') {
+      requestContent.path = 'oauth2/v3/' + model.url
+      request = gapi.client.request(requestContent)
+      Backbone.gapiRequest(request, method, model, options)
+      return false
     }
 
     switch (method) {
@@ -130,7 +121,6 @@ define(['config'], function(config) {
       case 'delete':
         requestContent.calendarId = todoApp.models.user.get('email')
         requestContent.eventId = model.get('id')
-        //requestContent['resource'] = model.toJSON()
         request = gapi.client.calendar[model.url].delete(requestContent)
         Backbone.gapiRequest(request, method, model, options)
         break

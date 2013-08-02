@@ -163,6 +163,8 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
       time.seconds(0)
       time.milliseconds(0)
 
+      time = this.checkDay(time)
+
       if (h < 9) {                            // time is before 9
         // set time at 9:00
         time.hours(9)
@@ -222,8 +224,25 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
         time.hours(33)
         time.minutes(0)
         console.log('18+ Next day 9:00.')
-        return time
+        return this.checkDay(time)
       }
+    },
+    /*
+     * Check what day is today If sunday(0) or saturday(6)
+     * set day to monday(1 || 7)
+     *
+     * @param moment time
+     * @returns moment
+     */
+    checkDay: function(time) {
+      if (time.days() === 6) {
+        console.log('Saturday. Set to Monday')
+        time.days(8)
+      } else if (time.days() === 0) {
+        console.log('Sunday. Set to Monday')
+        time.days(8)
+      }
+      return time
     },
     /*
      * Schedule an event on Google calendar
@@ -286,7 +305,7 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
     getStartDate: function(start) {
       // Get date or dateTime from start object
       var date = new moment(start.dateTime)
-      return date.format('MMM Do YY, h:mm a')
+      return date.format('ddd, MMM Do YY, h:mm a')
     },
     /*
      * Returns duration of an event

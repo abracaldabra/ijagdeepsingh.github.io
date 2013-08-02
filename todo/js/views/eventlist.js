@@ -13,10 +13,16 @@ define(['views/event'], function(EventView) {
       return this
     },
     renderEvent: function(model) {
-      var eventView = new EventView({
-        model: model
-      })
-      this.$el.append(eventView.render().el)
+      // Render events created by this app only
+      var ep = model.get('extendedProperties');
+      if (typeof(ep) === 'object' && typeof(ep.private) === 'object' && typeof(ep.private.status) === 'string') {
+        var eventView = new EventView({
+          model: model
+        })
+        this.$el.append(eventView.render().el)
+      } else {
+        todoApp.collections.events.remove(model)
+      }
     },
     sort: function() {
       var self = this

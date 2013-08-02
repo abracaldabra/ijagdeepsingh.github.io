@@ -4,23 +4,23 @@ define([], function() {
     routes: {
       // Define some URL routes
       "add": "add",
-      "home": "home"
+      "todo": "todo"
     },
     initialize: function() {
     },
     add: function() {
       if (typeof(todoApp) === "undefined") {
-        this.navigate('home')
+        this.navigate('todo')
         return false
       }
-      $('#home').removeClass('active')
+      $('#todo').removeClass('active')
       $('#add').addClass('active')
       $('.app-view').hide()
       $('.add-event-view').show()
     },
-    home: function() {
+    todo: function() {
       $('#add').removeClass('active')
-      $('#home').addClass('active')
+      $('#todo').addClass('active')
       $('.add-event-view').hide()
       $('.app-view').show()
     }

@@ -10,9 +10,10 @@ define([
   'views/eventlist',
   'collections/eventList',
   'models/calendar',
-  'models/user'
+  'models/user',
+  'moment'
 ],
-        function(ApiManager, Routes, AuthView, LoadingView, UserView, NavView, AddEventView, EventListView, EventList, Calendar, User) {
+        function(ApiManager, Routes, AuthView, LoadingView, UserView, NavView, AddEventView, EventListView, EventList, Calendar, User, moment) {
           var App = function() {
 
             this.routes = new Routes()
@@ -79,7 +80,6 @@ define([
               self.collections.events.fetch({
                 success: function(collection, res, req) {
                   $('.app-view').html(self.views.eventList.render().$el)
-                  console.log(res)
                 },
                 error: function(msg) {
                   $('.app-view').html('<div class="alert alert-error"><strong>Oh snap!</strong> No events found. <a href="#/add"><span class="fui-plus"></span> Add new events</a></div>')
@@ -88,6 +88,7 @@ define([
                   calendarId: self.models.user.get('email'),
                   orderBy: 'startTime',
                   singleEvents: true,
+                  timeMin: moment().format(),
                   fields: 'items(id, start, end, summary, status, description, extendedProperties)'
                 }
               })

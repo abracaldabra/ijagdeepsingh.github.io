@@ -31,11 +31,11 @@ define(['text!templates/event.html', 'moment'], function(template) {
       }
 
       // Check if event has extended properties
-      if (typeof(data.extendedProperties) === 'object') {
-        data.priority = data.extendedProperties.private.priority
-        data.status = this.getStatus(data.end, data.extendedProperties.private.status)
+      if (typeof(data.extendedProperties) === 'object' && typeof(data.extendedProperties.private) === 'object') {
+        data.priority = typeof(data.extendedProperties.private.priority) === 'string' ? data.extendedProperties.private.priority : 'none'
+        data.status = typeof(data.extendedProperties.private.status) === 'string' ? this.getStatus(data.end, data.extendedProperties.private.status) : 'none'
       }
-      // Check if event has no priority
+      // Check if event has priority set to something else other than high, low, medium
       if (data.priority !== 'high' && data.priority !== 'medium' && data.priority !== 'low') {
         data.priority = 'none'
       }
@@ -52,7 +52,7 @@ define(['text!templates/event.html', 'moment'], function(template) {
     getStartDate: function(start) {
       // Get date or dateTime from start object
       var date = new moment(start.date || start.dateTime)
-      return date.format('MMM Do YY, h:mm a')
+      return date.format('ddd, MMM Do YY, h:mm a')
     },
     /*
      * Returns duration of an event
