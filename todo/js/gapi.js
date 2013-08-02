@@ -52,7 +52,6 @@ define(['config'], function(config) {
       } else {
         // If error, show error view
         if (authResult && authResult.error) {
-          // TODO: Load error login view
           console.error('Unable to sign in:', authResult.error)
         }
         // Hide loading view
@@ -96,7 +95,6 @@ define(['config'], function(config) {
     })
   }
 
-  // TODO: create this for calendar api
   Backbone.sync = function(method, model, options) {
     var requestContent = {}, request
     options || (options = {})
@@ -148,7 +146,7 @@ define(['config'], function(config) {
     var result
     request.execute(function(res) {
       if (typeof(res) === 'undefined') {
-        //TODO: no events view
+        options.error('<strong>Oh snap!</strong> No events found. Use add new tab to add new events.')
         console.log('No events found')
       } else {
         if (res.error) {

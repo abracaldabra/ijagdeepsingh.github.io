@@ -243,6 +243,7 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
           }
           self.$el.html(self.addmore(d))
           self.event = new Event(res)
+          $('.app-view').html(todoApp.views.eventList.render().$el)
           todoApp.collections.events.add(self.event)
           todoApp.views.eventList.sort()
         }

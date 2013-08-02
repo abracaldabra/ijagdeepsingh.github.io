@@ -74,6 +74,10 @@ define(['text!templates/event.html', 'moment'], function(template) {
       console.log('delete: ' + this.model.get('id'))
       if (confirm("Are you sure you want to delete this event ?")) {
         todoApp.collections.events.get(this.model).destroy()
+        if (!todoApp.collections.events.size()) {
+          // Show no event error
+          $('.app-view').html('<div class="alert alert-error"><strong>Oh snap!</strong> No events found. <a href="#/add"><span class="fui-plus"></span> Add new events</a></div>')
+        }
       }
       return false
     },

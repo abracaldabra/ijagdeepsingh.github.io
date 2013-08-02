@@ -81,6 +81,9 @@ define([
                   $('.app-view').html(self.views.eventList.render().$el)
                   console.log(res)
                 },
+                error: function(msg) {
+                  $('.app-view').html('<div class="alert alert-error"><strong>Oh snap!</strong> No events found. <a href="#/add"><span class="fui-plus"></span> Add new events</a></div>')
+                },
                 data: {
                   calendarId: self.models.user.get('email'),
                   orderBy: 'startTime',
