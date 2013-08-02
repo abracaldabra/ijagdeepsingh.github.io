@@ -1,11 +1,13 @@
 //Filename: views/addevent.js
-define(['text!templates/addevent.html', 'radio', 'moment'], function(template) {
+define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/event', 'radio', 'moment'], function(addeventform, addmore, Event) {
   var AddEventView = Backbone.View.extend({
     el: $('.add-event-view'),
     // Cache the templates
-    template: _.template(template),
+    template: _.template(addeventform),
+    addmore: _.template(addmore),
     events: {
-      'click button#create-event': 'create'
+      'click button#create-event': 'create',
+      'click button#add-more': 'render'
     },
     initialize: function() {
       this.render()
@@ -25,6 +27,9 @@ define(['text!templates/addevent.html', 'radio', 'moment'], function(template) {
       data.priority = $('input[name=priority]:checked').val()
       data.duration = $('input[name=time]:checked').val()
 
+      console.log(data.summary + ":" + data.priority + ":" + data.duration)
+      this.$el.html('<div class="text-center"><i class="icon-spinner icon-spin icon-large"></i> Finding free time...</div>')
+
       // Get email from user model
       data.email = todoApp.models.user.get('email')
 
@@ -37,7 +42,7 @@ define(['text!templates/addevent.html', 'radio', 'moment'], function(template) {
       data.timeMax = new moment()
       data.timeMax.seconds(0)
       data.timeMax.milliseconds(0)
-      data.timeMax.add('M', 1)
+      data.timeMax.add('M', 3)
 
       // Based on priority schedule task from day 2 or 7
       // Add 2 days in timeMin if medium, add 7 if low
@@ -55,6 +60,8 @@ define(['text!templates/addevent.html', 'radio', 'moment'], function(template) {
 
       // Callback for http request
       options.success = function(res) {
+        self.$el.html('<div class="text-center"><i class="icon-spinner icon-spin icon-large"></i> Scheduling event...</div>')
+
         if (typeof(res.calendars) === "undefined") {
           // This calendar has no events
           console.log('No events found')
@@ -62,7 +69,7 @@ define(['text!templates/addevent.html', 'radio', 'moment'], function(template) {
           return false
         } else {
 
-          busy = res.calendars[data.email].busy,
+          var busy = res.calendars[data.email].busy,
                   l = busy.length
           // ========================== start
           var schedule = true, i = 0
@@ -77,8 +84,10 @@ define(['text!templates/addevent.html', 'radio', 'moment'], function(template) {
               console.log('event running. set timeMin = end')
               data.timeMin = self.checkTimeConstraints(end, data.duration)
               // TODO
-              if (i < l) {
+              if (i < l - 1) {
                 i++
+              } else {
+                schedule = false
               }
             } else {
               // Step 2
@@ -98,15 +107,23 @@ define(['text!templates/addevent.html', 'radio', 'moment'], function(template) {
                 console.log('we dont have time. set timeMin = end')
                 data.timeMin = self.checkTimeConstraints(end, data.duration)
                 // TODO
-                if (i < l) {
+                if (i < l - 1) {
                   i++
+                } else {
+                  schedule = false
                 }
               }
             }
 
           }
 
-          console.log('nothing found')
+          if (data.timeMax.diff(data.timeMin, 'm') > 0) {
+            console.log('Busy events over. Schedule event now')
+            self.scheduleEvent(data)
+          } else {
+            alert("You have no time in next three months for any event of this duration.")
+          }
+
           // ========================== end
 
         }
@@ -214,7 +231,74 @@ define(['text!templates/addevent.html', 'radio', 'moment'], function(template) {
      * @params Object data
      */
     scheduleEvent: function(data) {
+      var requestContent = {}, request, self = this
       console.log('Scheduled at: ' + data.timeMin.format())
+
+      var options = {
+        success: function(res) {
+          console.log(res)
+          var d = {
+            date: self.getStartDate(res.start),
+            time: self.getDuration(res.start, res.end)
+          }
+          self.$el.html(self.addmore(d))
+          self.event = new Event(res)
+          todoApp.collections.events.add(self.event)
+          todoApp.views.eventList.sort()
+        }
+      }
+
+      var startTime = data.timeMin.format()
+      var endTime = data.timeMin.add('m', data.duration).format()
+
+      requestContent = {
+        path: "calendar/v3/calendars/" + data.email + "/events",
+        method: "POST",
+        params: {
+          fields: "id, start, end, summary, status, extendedProperties",
+        },
+        body: {
+          summary: data.summary,
+          "end": {
+            "dateTime": endTime
+          },
+          "start": {
+            "dateTime": startTime
+          },
+          extendedProperties: {
+            private: {
+              priority: data.priority,
+              status: "Open"
+            },
+          }
+        }
+      }
+      request = gapi.client.request(requestContent)
+      Backbone.gapiRequest(request, 'create', this.model, options)
+
+    }, /*
+     * Returns the start dateTime of an event
+     *
+     * @param Object start
+     * @returns dateTime
+     */
+    getStartDate: function(start) {
+      // Get date or dateTime from start object
+      var date = new moment(start.dateTime)
+      return date.format('MMM Do YY, h:mm a')
+    },
+    /*
+     * Returns duration of an event
+     *
+     * @param Object start
+     * @param Object end
+     * @returns String
+     */
+    getDuration: function(start, end) {
+      var startTime = new moment(start.dateTime),
+              endTime = new moment(end.dateTime)
+      return endTime.diff(startTime, 'minutes') + "M"
+
     }
   })
 

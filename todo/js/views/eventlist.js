@@ -5,7 +5,6 @@ define(['views/event'], function(EventView) {
     className: 'nav nav-tabs nav-stacked eventlist',
     initialize: function() {
       this.collection.on('add', this.renderEvent, this)
-      this.collection.on('reset', this.reset, this)
     },
     render: function() {
       var $el = $(this.el),
@@ -19,9 +18,12 @@ define(['views/event'], function(EventView) {
       })
       this.$el.append(eventView.render().el)
     },
-    reset: function() {
-      this.$el = ""
-      this.remove()
+    sort: function() {
+      var self = this
+      self.$el.html('');
+      self.collection.each(function(model) {
+        self.renderEvent(model)
+      })
     }
   })
 

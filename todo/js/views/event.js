@@ -18,7 +18,7 @@ define(['text!templates/event.html', 'moment'], function(template) {
       data = {}
       data.id = this.model.get('id')
       data.summary = this.model.get('summary')
-      data.priority = this.model.get('description')
+      data.extendedProperties = this.model.get('extendedProperties')
       data.start = this.model.get('start')
       data.end = this.model.get('end')
       data.status = this.getStatus(data.end)
@@ -30,6 +30,11 @@ define(['text!templates/event.html', 'moment'], function(template) {
         data.summary = 'No title'
       }
 
+      // Check if event has extended properties
+      if (typeof(data.extendedProperties) === 'object') {
+        data.priority = data.extendedProperties.private.priority
+        data.status = this.getStatus(data.end, data.extendedProperties.private.status)
+      }
       // Check if event has no priority
       if (data.priority !== 'high' && data.priority !== 'medium' && data.priority !== 'low') {
         data.priority = 'none'
@@ -77,7 +82,9 @@ define(['text!templates/event.html', 'moment'], function(template) {
      *
      * @returns String
      */
-    getStatus: function(end) {
+    getStatus: function(end, status) {
+      if (status === "Completed")
+        return "Complete"
       var currentTime = new moment()
       return (currentTime.isBefore(end.date || end.dateTime)) ? "Open" : "Complete"
     }
