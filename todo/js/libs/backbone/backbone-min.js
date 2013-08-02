@@ -135,7 +135,7 @@
       default:
         while (++r < s)
           (i = t[r]).callback.apply(i.ctx, e)
-    }
+      }
   };
   var f = {listenTo: "on", listenToOnce: "once"};
   h.each(f, function(t, e) {
@@ -946,6 +946,3 @@
     }
   }
 }).call(this);
-/*
- //@ sourceMappingURL=backbone-min.map
- */
