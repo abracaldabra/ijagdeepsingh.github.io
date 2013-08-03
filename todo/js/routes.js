@@ -6,8 +6,7 @@ define([], function() {
       "add": "add",
       "todo": "todo"
     },
-    initialize: function() {
-    },
+    initialize: function() {},
     add: function() {
       if (typeof(todoApp) === "undefined") {
         this.navigate('todo')

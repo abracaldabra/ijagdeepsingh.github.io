@@ -22,14 +22,20 @@
   };
   a.emulateHTTP = false;
   a.emulateJSON = false;
-  var o = a.Events = {on: function(t, e, i) {
+  var o = a.Events = {
+    on: function(t, e, i) {
       if (!l(this, "on", t, [e, i]) || !e)
         return this;
       this._events || (this._events = {});
       var r = this._events[t] || (this._events[t] = []);
-      r.push({callback: e, context: i, ctx: i || this});
+      r.push({
+        callback: e,
+        context: i,
+        ctx: i || this
+      });
       return this
-    }, once: function(t, e, i) {
+    },
+    once: function(t, e, i) {
       if (!l(this, "once", t, [e, i]) || !e)
         return this;
       var r = this;
@@ -39,7 +45,8 @@
       });
       s._callback = e;
       return this.on(t, s, i)
-    }, off: function(t, e, i) {
+    },
+    off: function(t, e, i) {
       var r, s, n, a, o, u, c, f;
       if (!this._events || !l(this, "off", t, [e, i]))
         return this;
@@ -65,7 +72,8 @@
         }
       }
       return this
-    }, trigger: function(t) {
+    },
+    trigger: function(t) {
       if (!this._events)
         return this;
       var e = s.call(arguments, 1);
@@ -78,7 +86,8 @@
       if (r)
         c(r, arguments);
       return this
-    }, stopListening: function(t, e, i) {
+    },
+    stopListening: function(t, e, i) {
       var r = this._listeners;
       if (!r)
         return this;
@@ -93,7 +102,8 @@
           delete this._listeners[n]
       }
       return this
-    }};
+    }
+  };
   var u = /\s+/;
   var l = function(t, e, i, r) {
     if (!i)
@@ -114,7 +124,11 @@
     return true
   };
   var c = function(t, e) {
-    var i, r = -1, s = t.length, n = e[0], a = e[1], h = e[2];
+    var i, r = -1,
+      s = t.length,
+      n = e[0],
+      a = e[1],
+      h = e[2];
     switch (e.length) {
       case 0:
         while (++r < s)
@@ -135,9 +149,12 @@
       default:
         while (++r < s)
           (i = t[r]).callback.apply(i.ctx, e)
-      }
+    }
   };
-  var f = {listenTo: "on", listenToOnce: "once"};
+  var f = {
+    listenTo: "on",
+    listenToOnce: "once"
+  };
   h.each(f, function(t, e) {
     o[e] = function(e, i, r) {
       var s = this._listeners || (this._listeners = {});
@@ -169,18 +186,27 @@
     this.initialize.apply(this, arguments)
   };
   var p = ["url", "urlRoot", "collection"];
-  h.extend(d.prototype, o, {changed: null, validationError: null, idAttribute: "id", initialize: function() {
-    }, toJSON: function(t) {
+  h.extend(d.prototype, o, {
+    changed: null,
+    validationError: null,
+    idAttribute: "id",
+    initialize: function() {},
+    toJSON: function(t) {
       return h.clone(this.attributes)
-    }, sync: function() {
+    },
+    sync: function() {
       return a.sync.apply(this, arguments)
-    }, get: function(t) {
+    },
+    get: function(t) {
       return this.attributes[t]
-    }, escape: function(t) {
+    },
+    escape: function(t) {
       return h.escape(this.get(t))
-    }, has: function(t) {
+    },
+    has: function(t) {
       return this.get(t) != null
-    }, set: function(t, e, i) {
+    },
+    set: function(t, e, i) {
       var r, s, n, a, o, u, l, c;
       if (t == null)
         return this;
@@ -234,18 +260,26 @@
       this._pending = false;
       this._changing = false;
       return this
-    }, unset: function(t, e) {
-      return this.set(t, void 0, h.extend({}, e, {unset: true}))
-    }, clear: function(t) {
+    },
+    unset: function(t, e) {
+      return this.set(t, void 0, h.extend({}, e, {
+        unset: true
+      }))
+    },
+    clear: function(t) {
       var e = {};
       for (var i in this.attributes)
         e[i] = void 0;
-      return this.set(e, h.extend({}, t, {unset: true}))
-    }, hasChanged: function(t) {
+      return this.set(e, h.extend({}, t, {
+        unset: true
+      }))
+    },
+    hasChanged: function(t) {
       if (t == null)
-        return!h.isEmpty(this.changed);
+        return !h.isEmpty(this.changed);
       return h.has(this.changed, t)
-    }, changedAttributes: function(t) {
+    },
+    changedAttributes: function(t) {
       if (!t)
         return this.hasChanged() ? h.clone(this.changed) : false;
       var e, i = false;
@@ -256,13 +290,16 @@
         (i || (i = {}))[s] = e
       }
       return i
-    }, previous: function(t) {
+    },
+    previous: function(t) {
       if (t == null || !this._previousAttributes)
         return null;
       return this._previousAttributes[t]
-    }, previousAttributes: function() {
+    },
+    previousAttributes: function() {
       return h.clone(this._previousAttributes)
-    }, fetch: function(t) {
+    },
+    fetch: function(t) {
       t = t ? h.clone(t) : {};
       if (t.parse === void 0)
         t.parse = true;
@@ -277,7 +314,8 @@
       };
       R(this, t);
       return this.sync("read", this, t)
-    }, save: function(t, e, i) {
+    },
+    save: function(t, e, i) {
       var r, s, n, a = this.attributes;
       if (t == null || typeof t === "object") {
         r = t;
@@ -287,7 +325,9 @@
       }
       if (r && (!i || !i.wait) && !this.set(r, i))
         return false;
-      i = h.extend({validate: true}, i);
+      i = h.extend({
+        validate: true
+      }, i);
       if (!this._validate(r, i))
         return false;
       if (r && i.wait) {
@@ -317,7 +357,8 @@
       if (r && i.wait)
         this.attributes = a;
       return n
-    }, destroy: function(t) {
+    },
+    destroy: function(t) {
       t = t ? h.clone(t) : {};
       var e = this;
       var i = t.success;
@@ -341,29 +382,40 @@
       if (!t.wait)
         r();
       return s
-    }, url: function() {
+    },
+    url: function() {
       var t = h.result(this, "urlRoot") || h.result(this.collection, "url") || U();
       if (this.isNew())
         return t;
       return t + (t.charAt(t.length - 1) === "/" ? "" : "/") + encodeURIComponent(this.id)
-    }, parse: function(t, e) {
+    },
+    parse: function(t, e) {
       return t
-    }, clone: function() {
+    },
+    clone: function() {
       return new this.constructor(this.attributes)
-    }, isNew: function() {
+    },
+    isNew: function() {
       return this.id == null
-    }, isValid: function(t) {
-      return this._validate({}, h.extend(t || {}, {validate: true}))
-    }, _validate: function(t, e) {
+    },
+    isValid: function(t) {
+      return this._validate({}, h.extend(t || {}, {
+        validate: true
+      }))
+    },
+    _validate: function(t, e) {
       if (!e.validate || !this.validate)
         return true;
       t = h.extend({}, this.attributes, t);
       var i = this.validationError = this.validate(t, e) || null;
       if (!i)
         return true;
-      this.trigger("invalid", this, i, h.extend(e || {}, {validationError: i}));
+      this.trigger("invalid", this, i, h.extend(e || {}, {
+        validationError: i
+      }));
       return false
-    }});
+    }
+  });
   var v = ["keys", "values", "pairs", "invert", "pick", "omit"];
   h.each(v, function(t) {
     d.prototype[t] = function() {
@@ -383,20 +435,35 @@
     this._reset();
     this.initialize.apply(this, arguments);
     if (t)
-      this.reset(t, h.extend({silent: true}, e))
+      this.reset(t, h.extend({
+        silent: true
+      }, e))
   };
-  var m = {add: true, remove: true, merge: true};
-  var y = {add: true, merge: false, remove: false};
-  h.extend(g.prototype, o, {model: d, initialize: function() {
-    }, toJSON: function(t) {
+  var m = {
+    add: true,
+    remove: true,
+    merge: true
+  };
+  var y = {
+    add: true,
+    merge: false,
+    remove: false
+  };
+  h.extend(g.prototype, o, {
+    model: d,
+    initialize: function() {},
+    toJSON: function(t) {
       return this.map(function(e) {
         return e.toJSON(t)
       })
-    }, sync: function() {
+    },
+    sync: function() {
       return a.sync.apply(this, arguments)
-    }, add: function(t, e) {
+    },
+    add: function(t, e) {
       return this.set(t, h.defaults(e || {}, y))
-    }, remove: function(t, e) {
+    },
+    remove: function(t, e) {
       t = h.isArray(t) ? t.slice() : [t];
       e || (e = {});
       var i, r, s, n;
@@ -416,7 +483,8 @@
         this._removeReference(n)
       }
       return this
-    }, set: function(t, e) {
+    },
+    set: function(t, e) {
       e = h.defaults(e || {}, m);
       if (e.parse)
         t = this.parse(t, e);
@@ -426,7 +494,9 @@
       var c = e.at;
       var f = this.comparator && c == null && e.sort !== false;
       var d = h.isString(this.comparator) ? this.comparator : null;
-      var p = [], v = [], g = {};
+      var p = [],
+        v = [],
+        g = {};
       for (i = 0, s = t.length; i < s; i++) {
         if (!(a = this._prepareModel(t[i], e)))
           continue;
@@ -465,7 +535,9 @@
         }
       }
       if (l)
-        this.sort({silent: true});
+        this.sort({
+          silent: true
+        });
       if (e.silent)
         return this;
       for (i = 0, s = p.length; i < s; i++) {
@@ -474,42 +546,57 @@
       if (l)
         this.trigger("sort", this, e);
       return this
-    }, reset: function(t, e) {
+    },
+    reset: function(t, e) {
       e || (e = {});
       for (var i = 0, r = this.models.length; i < r; i++) {
         this._removeReference(this.models[i])
       }
       e.previousModels = this.models;
       this._reset();
-      this.add(t, h.extend({silent: true}, e));
+      this.add(t, h.extend({
+        silent: true
+      }, e));
       if (!e.silent)
         this.trigger("reset", this, e);
       return this
-    }, push: function(t, e) {
+    },
+    push: function(t, e) {
       t = this._prepareModel(t, e);
-      this.add(t, h.extend({at: this.length}, e));
+      this.add(t, h.extend({
+        at: this.length
+      }, e));
       return t
-    }, pop: function(t) {
+    },
+    pop: function(t) {
       var e = this.at(this.length - 1);
       this.remove(e, t);
       return e
-    }, unshift: function(t, e) {
+    },
+    unshift: function(t, e) {
       t = this._prepareModel(t, e);
-      this.add(t, h.extend({at: 0}, e));
+      this.add(t, h.extend({
+        at: 0
+      }, e));
       return t
-    }, shift: function(t) {
+    },
+    shift: function(t) {
       var e = this.at(0);
       this.remove(e, t);
       return e
-    }, slice: function(t, e) {
+    },
+    slice: function(t, e) {
       return this.models.slice(t, e)
-    }, get: function(t) {
+    },
+    get: function(t) {
       if (t == null)
         return void 0;
       return this._byId[t.id != null ? t.id : t.cid || t]
-    }, at: function(t) {
+    },
+    at: function(t) {
       return this.models[t]
-    }, where: function(t, e) {
+    },
+    where: function(t, e) {
       if (h.isEmpty(t))
         return e ? void 0 : [];
       return this[e ? "find" : "filter"](function(e) {
@@ -519,9 +606,11 @@
         }
         return true
       })
-    }, findWhere: function(t) {
+    },
+    findWhere: function(t) {
       return this.where(t, true)
-    }, sort: function(t) {
+    },
+    sort: function(t) {
       if (!this.comparator)
         throw new Error("Cannot sort a set without a comparator");
       t || (t = {});
@@ -533,15 +622,18 @@
       if (!t.silent)
         this.trigger("sort", this, t);
       return this
-    }, sortedIndex: function(t, e, i) {
+    },
+    sortedIndex: function(t, e, i) {
       e || (e = this.comparator);
       var r = h.isFunction(e) ? e : function(t) {
-        return t.get(e)
-      };
+          return t.get(e)
+        };
       return h.sortedIndex(this.models, t, r, i)
-    }, pluck: function(t) {
+    },
+    pluck: function(t) {
       return h.invoke(this.models, "get", t)
-    }, fetch: function(t) {
+    },
+    fetch: function(t) {
       t = t ? h.clone(t) : {};
       if (t.parse === void 0)
         t.parse = true;
@@ -556,7 +648,8 @@
       };
       R(this, t);
       return this.sync("read", this, t)
-    }, create: function(t, e) {
+    },
+    create: function(t, e) {
       e = e ? h.clone(e) : {};
       if (!(t = this._prepareModel(t, e)))
         return false;
@@ -572,15 +665,19 @@
       };
       t.save(null, e);
       return t
-    }, parse: function(t, e) {
+    },
+    parse: function(t, e) {
       return t
-    }, clone: function() {
+    },
+    clone: function() {
       return new this.constructor(this.models)
-    }, _reset: function() {
+    },
+    _reset: function() {
       this.length = 0;
       this.models = [];
       this._byId = {}
-    }, _prepareModel: function(t, e) {
+    },
+    _prepareModel: function(t, e) {
       if (t instanceof d) {
         if (!t.collection)
           t.collection = this;
@@ -594,11 +691,13 @@
         return false
       }
       return i
-    }, _removeReference: function(t) {
+    },
+    _removeReference: function(t) {
       if (this === t.collection)
         delete t.collection;
       t.off("all", this._onModelEvent, this)
-    }, _onModelEvent: function(t, e, i, r) {
+    },
+    _onModelEvent: function(t, e, i, r) {
       if ((t === "add" || t === "remove") && i !== this)
         return;
       if (t === "destroy")
@@ -609,7 +708,8 @@
           this._byId[e.id] = e
       }
       this.trigger.apply(this, arguments)
-    }});
+    }
+  });
   var _ = ["forEach", "each", "map", "collect", "reduce", "foldl", "inject", "reduceRight", "foldr", "find", "detect", "filter", "select", "reject", "every", "all", "some", "any", "include", "contains", "invoke", "max", "min", "toArray", "size", "first", "head", "take", "initial", "rest", "tail", "drop", "last", "without", "indexOf", "shuffle", "lastIndexOf", "isEmpty", "chain"];
   h.each(_, function(t) {
     g.prototype[t] = function() {
@@ -622,8 +722,8 @@
   h.each(w, function(t) {
     g.prototype[t] = function(e, i) {
       var r = h.isFunction(e) ? e : function(t) {
-        return t.get(e)
-      };
+          return t.get(e)
+        };
       return h[t](this.models, r, i)
     }
   });
@@ -636,16 +736,21 @@
   };
   var x = /^(\S+)\s*(.*)$/;
   var E = ["model", "collection", "el", "id", "attributes", "className", "tagName", "events"];
-  h.extend(b.prototype, o, {tagName: "div", $: function(t) {
+  h.extend(b.prototype, o, {
+    tagName: "div",
+    $: function(t) {
       return this.$el.find(t)
-    }, initialize: function() {
-    }, render: function() {
+    },
+    initialize: function() {},
+    render: function() {
       return this
-    }, remove: function() {
+    },
+    remove: function() {
       this.$el.remove();
       this.stopListening();
       return this
-    }, setElement: function(t, e) {
+    },
+    setElement: function(t, e) {
       if (this.$el)
         this.undelegateEvents();
       this.$el = t instanceof a.$ ? t : a.$(t);
@@ -653,7 +758,8 @@
       if (e !== false)
         this.delegateEvents();
       return this
-    }, delegateEvents: function(t) {
+    },
+    delegateEvents: function(t) {
       if (!(t || (t = h.result(this, "events"))))
         return this;
       this.undelegateEvents();
@@ -664,7 +770,8 @@
         if (!i)
           continue;
         var r = e.match(x);
-        var s = r[1], n = r[2];
+        var s = r[1],
+          n = r[2];
         i = h.bind(i, this);
         s += ".delegateEvents" + this.cid;
         if (n === "") {
@@ -674,15 +781,18 @@
         }
       }
       return this
-    }, undelegateEvents: function() {
+    },
+    undelegateEvents: function() {
       this.$el.off(".delegateEvents" + this.cid);
       return this
-    }, _configure: function(t) {
+    },
+    _configure: function(t) {
       if (this.options)
         t = h.extend({}, h.result(this, "options"), t);
       h.extend(this, h.pick(t, E));
       this.options = t
-    }, _ensureElement: function() {
+    },
+    _ensureElement: function() {
       if (!this.el) {
         var t = h.extend({}, h.result(this, "attributes"));
         if (this.id)
@@ -694,11 +804,18 @@
       } else {
         this.setElement(h.result(this, "el"), false)
       }
-    }});
+    }
+  });
   a.sync = function(t, e, i) {
     var r = k[t];
-    h.defaults(i || (i = {}), {emulateHTTP: a.emulateHTTP, emulateJSON: a.emulateJSON});
-    var s = {type: r, dataType: "json"};
+    h.defaults(i || (i = {}), {
+      emulateHTTP: a.emulateHTTP,
+      emulateJSON: a.emulateJSON
+    });
+    var s = {
+      type: r,
+      dataType: "json"
+    };
     if (!i.url) {
       s.url = h.result(e, "url") || U()
     }
@@ -708,7 +825,9 @@
     }
     if (i.emulateJSON) {
       s.contentType = "application/x-www-form-urlencoded";
-      s.data = s.data ? {model: s.data} : {}
+      s.data = s.data ? {
+        model: s.data
+      } : {}
     }
     if (i.emulateHTTP && (r === "PUT" || r === "DELETE" || r === "PATCH")) {
       s.type = "POST";
@@ -733,7 +852,13 @@
     e.trigger("request", e, o, i);
     return o
   };
-  var k = {create: "POST", update: "PUT", patch: "PATCH", "delete": "DELETE", read: "GET"};
+  var k = {
+    create: "POST",
+    update: "PUT",
+    patch: "PATCH",
+    "delete": "DELETE",
+    read: "GET"
+  };
   a.ajax = function() {
     return a.$.ajax.apply(a.$, arguments)
   };
@@ -748,8 +873,9 @@
   var T = /(\(\?)?:\w+/g;
   var H = /\*\w+/g;
   var A = /[\-{}\[\]+?.,\\\^$|#\s]/g;
-  h.extend(S.prototype, o, {initialize: function() {
-    }, route: function(t, e, i) {
+  h.extend(S.prototype, o, {
+    initialize: function() {},
+    route: function(t, e, i) {
       if (!h.isRegExp(t))
         t = this._routeToRegExp(t);
       if (h.isFunction(e)) {
@@ -767,10 +893,12 @@
         a.history.trigger("route", r, e, n)
       });
       return this
-    }, navigate: function(t, e) {
+    },
+    navigate: function(t, e) {
       a.history.navigate(t, e);
       return this
-    }, _bindRoutes: function() {
+    },
+    _bindRoutes: function() {
       if (!this.routes)
         return;
       this.routes = h.result(this, "routes");
@@ -778,17 +906,20 @@
       while ((t = e.pop()) != null) {
         this.route(t, this.routes[t])
       }
-    }, _routeToRegExp: function(t) {
+    },
+    _routeToRegExp: function(t) {
       t = t.replace(A, "\\$&").replace($, "(?:$1)?").replace(T, function(t, e) {
         return e ? t : "([^/]+)"
       }).replace(H, "(.*?)");
       return new RegExp("^" + t + "$")
-    }, _extractParameters: function(t, e) {
+    },
+    _extractParameters: function(t, e) {
       var i = t.exec(e).slice(1);
       return h.map(i, function(t) {
         return t ? decodeURIComponent(t) : null
       })
-    }});
+    }
+  });
   var I = a.History = function() {
     this.handlers = [];
     h.bindAll(this, "checkUrl");
@@ -802,10 +933,13 @@
   var O = /msie [\w.]+/;
   var C = /\/$/;
   I.started = false;
-  h.extend(I.prototype, o, {interval: 50, getHash: function(t) {
+  h.extend(I.prototype, o, {
+    interval: 50,
+    getHash: function(t) {
       var e = (t || this).location.href.match(/#(.*)$/);
       return e ? e[1] : ""
-    }, getFragment: function(t, e) {
+    },
+    getFragment: function(t, e) {
       if (t == null) {
         if (this._hasPushState || !this._wantsHashChange || e) {
           t = this.location.pathname;
@@ -817,15 +951,18 @@
         }
       }
       return t.replace(N, "")
-    }, start: function(t) {
+    },
+    start: function(t) {
       if (I.started)
         throw new Error("Backbone.history has already been started");
       I.started = true;
-      this.options = h.extend({}, {root: "/"}, this.options, t);
+      this.options = h.extend({}, {
+        root: "/"
+      }, this.options, t);
       this.root = this.options.root;
       this._wantsHashChange = this.options.hashChange !== false;
-      this._wantsPushState = !!this.options.pushState;
-      this._hasPushState = !!(this.options.pushState && this.history && this.history.pushState);
+      this._wantsPushState = !! this.options.pushState;
+      this._hasPushState = !! (this.options.pushState && this.history && this.history.pushState);
       var e = this.getFragment();
       var i = document.documentMode;
       var r = O.exec(navigator.userAgent.toLowerCase()) && (!i || i <= 7);
@@ -836,7 +973,7 @@
       }
       if (this._hasPushState) {
         a.$(window).on("popstate", this.checkUrl)
-      } else if (this._wantsHashChange && "onhashchange"in window && !r) {
+      } else if (this._wantsHashChange && "onhashchange" in window && !r) {
         a.$(window).on("hashchange", this.checkUrl)
       } else if (this._wantsHashChange) {
         this._checkUrlInterval = setInterval(this.checkUrl, this.interval)
@@ -854,13 +991,19 @@
       }
       if (!this.options.silent)
         return this.loadUrl()
-    }, stop: function() {
+    },
+    stop: function() {
       a.$(window).off("popstate", this.checkUrl).off("hashchange", this.checkUrl);
       clearInterval(this._checkUrlInterval);
       I.started = false
-    }, route: function(t, e) {
-      this.handlers.unshift({route: t, callback: e})
-    }, checkUrl: function(t) {
+    },
+    route: function(t, e) {
+      this.handlers.unshift({
+        route: t,
+        callback: e
+      })
+    },
+    checkUrl: function(t) {
       var e = this.getFragment();
       if (e === this.fragment && this.iframe) {
         e = this.getFragment(this.getHash(this.iframe))
@@ -870,7 +1013,8 @@
       if (this.iframe)
         this.navigate(e);
       this.loadUrl() || this.loadUrl(this.getHash())
-    }, loadUrl: function(t) {
+    },
+    loadUrl: function(t) {
       var e = this.fragment = this.getFragment(t);
       var i = h.any(this.handlers, function(t) {
         if (t.route.test(e)) {
@@ -879,11 +1023,14 @@
         }
       });
       return i
-    }, navigate: function(t, e) {
+    },
+    navigate: function(t, e) {
       if (!I.started)
         return false;
       if (!e || e === true)
-        e = {trigger: e};
+        e = {
+          trigger: e
+        };
       t = this.getFragment(t || "");
       if (this.fragment === t)
         return;
@@ -903,14 +1050,16 @@
       }
       if (e.trigger)
         this.loadUrl(t)
-    }, _updateHash: function(t, e, i) {
+    },
+    _updateHash: function(t, e, i) {
       if (i) {
         var r = t.href.replace(/(javascript:|#).*$/, "");
         t.replace(r + "#" + e)
       } else {
         t.hash = "#" + e
       }
-    }});
+    }
+  });
   a.history = new I;
   var j = function(t, e) {
     var i = this;

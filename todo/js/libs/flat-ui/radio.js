@@ -2,7 +2,7 @@
  * flatui-radio.js v0.0.2
  * ============================================================ */
 
-!function($) {
+! function($) {
 
   /* RADIO PUBLIC CLASS DEFINITION
    * ============================== */
@@ -14,7 +14,8 @@
   Radio.prototype = {
     constructor: Radio
 
-            , init: function(element, options) {
+    ,
+    init: function(element, options) {
       var $el = this.$element = $(element)
 
       this.options = $.extend({}, $.fn.radio.defaults, options);
@@ -22,32 +23,34 @@
       this.setState();
     }
 
-    , setState: function() {
-      var $el = this.$element
-              , $parent = $el.closest('.radio');
+    ,
+    setState: function() {
+      var $el = this.$element,
+        $parent = $el.closest('.radio');
 
       $el.prop('disabled') && $parent.addClass('disabled');
       $el.prop('checked') && $parent.addClass('checked');
     }
 
-    , toggle: function() {
-      var d = 'disabled'
-              , ch = 'checked'
-              , $el = this.$element
-              , checked = $el.prop(ch)
-              , $parent = $el.closest('.radio')
-              , $parentWrap = $el.closest('form').length ? $el.closest('form') : $el.closest('body')
-              , $elemGroup = $parentWrap.find(':radio[name="' + $el.attr('name') + '"]')
-              , e = $.Event('toggle')
+    ,
+    toggle: function() {
+      var d = 'disabled',
+        ch = 'checked',
+        $el = this.$element,
+        checked = $el.prop(ch),
+        $parent = $el.closest('.radio'),
+        $parentWrap = $el.closest('form').length ? $el.closest('form') : $el.closest('body'),
+        $elemGroup = $parentWrap.find(':radio[name="' + $el.attr('name') + '"]'),
+        e = $.Event('toggle')
 
-      $elemGroup.not($el).each(function() {
-        var $el = $(this)
-                , $parent = $(this).closest('.radio');
+        $elemGroup.not($el).each(function() {
+          var $el = $(this),
+            $parent = $(this).closest('.radio');
 
-        if ($el.prop(d) == false) {
-          $parent.removeClass(ch) && $el.attr(ch, false).trigger('change');
-        }
-      });
+          if ($el.prop(d) == false) {
+            $parent.removeClass(ch) && $el.attr(ch, false).trigger('change');
+          }
+        });
 
       if ($el.prop(d) == false) {
         if (checked == false)
@@ -60,22 +63,23 @@
       }
     }
 
-    , setCheck: function(option) {
-      var ch = 'checked'
-              , $el = this.$element
-              , $parent = $el.closest('.radio')
-              , checkAction = option == 'check' ? true : false
-              , checked = $el.prop(ch)
-              , $parentWrap = $el.closest('form').length ? $el.closest('form') : $el.closest('body')
-              , $elemGroup = $parentWrap.find(':radio[name="' + $el['attr']('name') + '"]')
-              , e = $.Event(option)
+    ,
+    setCheck: function(option) {
+      var ch = 'checked',
+        $el = this.$element,
+        $parent = $el.closest('.radio'),
+        checkAction = option == 'check' ? true : false,
+        checked = $el.prop(ch),
+        $parentWrap = $el.closest('form').length ? $el.closest('form') : $el.closest('body'),
+        $elemGroup = $parentWrap.find(':radio[name="' + $el['attr']('name') + '"]'),
+        e = $.Event(option)
 
-      $elemGroup.not($el).each(function() {
-        var $el = $(this)
-                , $parent = $(this).closest('.radio');
+        $elemGroup.not($el).each(function() {
+          var $el = $(this),
+            $parent = $(this).closest('.radio');
 
-        $parent.removeClass(ch) && $el.removeAttr(ch);
-      });
+          $parent.removeClass(ch) && $el.removeAttr(ch);
+        });
 
       $parent[checkAction ? 'addClass' : 'removeClass'](ch) && checkAction ? $el.attr(ch, true) : $el.removeAttr(ch);
       $el.trigger(e);
@@ -95,9 +99,9 @@
 
   $.fn.radio = function(option) {
     return this.each(function() {
-      var $this = $(this)
-              , data = $this.data('radio')
-              , options = $.extend({}, $.fn.radio.defaults, $this.data(), typeof option == 'object' && option);
+      var $this = $(this),
+        data = $this.data('radio'),
+        options = $.extend({}, $.fn.radio.defaults, $this.data(), typeof option == 'object' && option);
       if (!data)
         $this.data('radio', (data = new Radio(this, options)));
       if (option == 'toggle')

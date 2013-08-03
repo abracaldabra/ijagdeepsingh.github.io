@@ -2,10 +2,10 @@
 define(['config'], function(config) {
   var app
 
-  function ApiManager(_app) {
-    app = _app
-    this.loadGapi()
-  }
+    function ApiManager(_app) {
+      app = _app
+      this.loadGapi()
+    }
 
   _.extend(ApiManager.prototype, Backbone.Events)
 
@@ -13,54 +13,53 @@ define(['config'], function(config) {
     // create copy of 'this' because we will edit this.checkAuth method later
     var self = this
     // Load the Google Calendar api
-    gapi.client.load('calendar', 'v3', function() { /* Loaded */
-    })
+    gapi.client.load('calendar', 'v3', function() { /* Loaded */ })
 
-    function handleClientLoad() {
-      gapi.client.setApiKey(config.apiKey)
-      window.setTimeout(checkAuth, 100)
-    }
-
-    // Authorize user with Google Calendar
-
-    function checkAuth() {
-      gapi.auth.authorize({
-        client_id: config.clientId,
-        scope: config.scopes,
-        immediate: true
-      }, handleAuthResult)
-    }
-
-    // Handle authorize user response
-
-    function handleAuthResult(authResult) {
-      var authTimeout
-
-      // If login successfull with no error
-      if (authResult && !authResult.error) {
-        // Schedule a check when the authentication token expires
-        if (authResult.expires_in) {
-          authTimeout = (authResult.expires_in - 5 * 60) * 1000
-          setTimeout(checkAuth, authTimeout)
-        }
-        // Hide loading view
-        app.views.loading.$el.hide()
-        // Hide login view
-        app.views.auth.$el.hide()
-        // trigger ready event
-        self.trigger('ready')
-      } else {
-        // If error, show error view
-        if (authResult && authResult.error) {
-          console.error('Unable to sign in:', authResult.error)
-        }
-        // Hide loading view
-        app.views.loading.$el.hide()
-        // Otherwise just load login view
-        app.views.auth.$el.show()
-        console.log('Access denied or User not logged in')
+      function handleClientLoad() {
+        gapi.client.setApiKey(config.apiKey)
+        window.setTimeout(checkAuth, 100)
       }
-    }
+
+      // Authorize user with Google Calendar
+
+      function checkAuth() {
+        gapi.auth.authorize({
+          client_id: config.clientId,
+          scope: config.scopes,
+          immediate: true
+        }, handleAuthResult)
+      }
+
+      // Handle authorize user response
+
+      function handleAuthResult(authResult) {
+        var authTimeout
+
+        // If login successfull with no error
+        if (authResult && !authResult.error) {
+          // Schedule a check when the authentication token expires
+          if (authResult.expires_in) {
+            authTimeout = (authResult.expires_in - 5 * 60) * 1000
+            setTimeout(checkAuth, authTimeout)
+          }
+          // Hide loading view
+          app.views.loading.$el.hide()
+          // Hide login view
+          app.views.auth.$el.hide()
+          // trigger ready event
+          self.trigger('ready')
+        } else {
+          // If error, show error view
+          if (authResult && authResult.error) {
+            console.error('Unable to sign in:', authResult.error)
+          }
+          // Hide loading view
+          app.views.loading.$el.hide()
+          // Otherwise just load login view
+          app.views.auth.$el.show()
+          console.log('Access denied or User not logged in')
+        }
+      }
 
     this.checkAuth = function() {
       gapi.auth.authorize({
@@ -96,14 +95,14 @@ define(['config'], function(config) {
 
   Backbone.sync = function(method, model, options) {
     var requestContent = {}, request
-    options || (options = {})
+      options || (options = {})
 
-    if (model.url === 'userinfo') {
-      requestContent.path = 'oauth2/v3/' + model.url
-      request = gapi.client.request(requestContent)
-      Backbone.gapiRequest(request, method, model, options)
-      return false
-    }
+      if (model.url === 'userinfo') {
+        requestContent.path = 'oauth2/v3/' + model.url
+        request = gapi.client.request(requestContent)
+        Backbone.gapiRequest(request, method, model, options)
+        return false
+      }
 
     switch (method) {
       case 'create':

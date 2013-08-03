@@ -55,8 +55,8 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
       requestContent.timeMax = data.timeMax.format()
       requestContent.fields = 'timeMin, timeMax, calendars'
       requestContent.items = [{
-          id: data.email
-        }]
+        id: data.email
+      }]
 
       // Callback for http request
       options.success = function(res) {
@@ -70,41 +70,19 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
         } else {
 
           var busy = res.calendars[data.email].busy,
-                  l = busy.length
-          // ========================== start
-          var schedule = true, i = 0
+            l = busy.length
+            // ========================== start
+          var schedule = true,
+            i = 0
           while (data.timeMax.diff(data.timeMin, 'm') > 0 && schedule) {
 
             // Step 1
             var start = new moment(busy[i].start),
-                    end = new moment(busy[i].end)
+              end = new moment(busy[i].end)
 
-            if (start.isSame(data.timeMin)) {
-              // Event running
-              console.log('event running. set timeMin = end')
-              data.timeMin = self.checkTimeConstraints(end, data.duration)
-              // TODO
-              if (i < l - 1) {
-                i++
-              } else {
-                schedule = false
-              }
-            } else {
-              // Step 2
-              // Event in future
-              // Check if time remaining is greater than event duration
-              if (start.diff(data.timeMin, 'm') >= data.duration) {
-                // We have time for event
-                // Schedule it now
-                console.log('We have time schedule event now')
-                self.scheduleEvent(data)
-                schedule = false
-                return false
-              } else {
-                // Step 3
-                // We dont have time for event
-                // Set timeMin = end
-                console.log('we dont have time. set timeMin = end')
+              if (start.isSame(data.timeMin)) {
+                // Event running
+                console.log('event running. set timeMin = end')
                 data.timeMin = self.checkTimeConstraints(end, data.duration)
                 // TODO
                 if (i < l - 1) {
@@ -112,8 +90,31 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
                 } else {
                   schedule = false
                 }
+              } else {
+                // Step 2
+                // Event in future
+                // Check if time remaining is greater than event duration
+                if (start.diff(data.timeMin, 'm') >= data.duration) {
+                  // We have time for event
+                  // Schedule it now
+                  console.log('We have time schedule event now')
+                  self.scheduleEvent(data)
+                  schedule = false
+                  return false
+                } else {
+                  // Step 3
+                  // We dont have time for event
+                  // Set timeMin = end
+                  console.log('we dont have time. set timeMin = end')
+                  data.timeMin = self.checkTimeConstraints(end, data.duration)
+                  // TODO
+                  if (i < l - 1) {
+                    i++
+                  } else {
+                    schedule = false
+                  }
+                }
               }
-            }
 
           }
 
@@ -159,73 +160,73 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
      */
     checkTimeConstraints: function(time, duration) {
       var h = time.hours(),
-              m = time.minutes()
-      time.seconds(0)
-      time.milliseconds(0)
+        m = time.minutes()
+        time.seconds(0)
+        time.milliseconds(0)
 
-      time = this.checkDay(time)
+        time = this.checkDay(time)
 
-      if (h < 9) {                            // time is before 9
-        // set time at 9:00
-        time.hours(9)
-        time.minutes(0)
-        console.log('9- Set to 9:00')
-        return time
-      } else if (h >= 9 && h <= 11) {         // time is between 9-12
-        // if time is 11+ then check
-        // if time is available for event
-        if (h === 11) {
-          if (((60 - m) - duration) >= 0) {
-            // Yes we have time for event
-            console.log('11+ have time')
-            return time
+        if (h < 9) { // time is before 9
+          // set time at 9:00
+          time.hours(9)
+          time.minutes(0)
+          console.log('9- Set to 9:00')
+          return time
+        } else if (h >= 9 && h <= 11) { // time is between 9-12
+          // if time is 11+ then check
+          // if time is available for event
+          if (h === 11) {
+            if (((60 - m) - duration) >= 0) {
+              // Yes we have time for event
+              console.log('11+ have time')
+              return time
+            } else {
+              // Not enough time for event
+              // Set time to 1:00
+              time.hours(13)
+              time.minutes(0)
+              console.log('11+ No time. Set to 1:00')
+              return time
+            }
           } else {
-            // Not enough time for event
-            // Set time to 1:00
-            time.hours(13)
-            time.minutes(0)
-            console.log('11+ No time. Set to 1:00')
+            // We have time for event
+            console.log('9+ have time')
             return time
           }
-        } else {
-          // We have time for event
-          console.log('9+ have time')
+        } else if (h === 12) { // time is between 12-1
+          // set time at 1:00
+          time.hours(13)
+          time.minutes(0)
+          console.log('12+ time. Set to 1:00')
           return time
-        }
-      } else if (h === 12) {                  // time is between 12-1
-        // set time at 1:00
-        time.hours(13)
-        time.minutes(0)
-        console.log('12+ time. Set to 1:00')
-        return time
-      } else if (h >= 1 && h <= 17) {         // time is between 1-6
-        // if time is 17+ then check
-        // if time is available for event
-        if (h === 17) {
-          if (((60 - m) - duration) >= 0) {
-            // Yes we have time for event
-            console.log('17+ have time.')
-            return time
+        } else if (h >= 1 && h <= 17) { // time is between 1-6
+          // if time is 17+ then check
+          // if time is available for event
+          if (h === 17) {
+            if (((60 - m) - duration) >= 0) {
+              // Yes we have time for event
+              console.log('17+ have time.')
+              return time
+            } else {
+              // Not enough time for event
+              // Next day
+              time.hours(33)
+              time.minutes(0)
+              console.log('17+ no time. Set to 9:00 next day.')
+              return time
+            }
           } else {
-            // Not enough time for event
-            // Next day
-            time.hours(33)
-            time.minutes(0)
-            console.log('17+ no time. Set to 9:00 next day.')
+            // Yo we have enough time
+            console.log('1+ have time')
             return time
           }
-        } else {
-          // Yo we have enough time
-          console.log('1+ have time')
-          return time
+        } else if (h > 17) { // time is after 6
+          // set time next day at 9:00
+          time.hours(33)
+          time.minutes(0)
+          console.log('18+ Next day 9:00.')
+          return this.checkDay(time)
         }
-      } else if (h > 17) {                    // time is after 6
-        // set time next day at 9:00
-        time.hours(33)
-        time.minutes(0)
-        console.log('18+ Next day 9:00.')
-        return this.checkDay(time)
-      }
     },
     /*
      * Check what day is today If sunday(0) or saturday(6)
@@ -251,21 +252,21 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
      */
     scheduleEvent: function(data) {
       var requestContent = {}, request, self = this
-      console.log('Scheduled at: ' + data.timeMin.format())
+        console.log('Scheduled at: ' + data.timeMin.format())
 
-      var options = {
-        success: function(res) {
-          console.log(res)
-          var d = {
-            date: self.getStartDate(res.start),
-            time: self.getDuration(res.start, res.end)
+        var options = {
+          success: function(res) {
+            console.log(res)
+            var d = {
+              date: self.getStartDate(res.start),
+              time: self.getDuration(res.start, res.end)
+            }
+            self.$el.html(self.addmore(d))
+            self.event = new Event(res)
+            $('.app-view').html(todoApp.views.eventList.render().$el)
+            todoApp.collections.events.add(self.event)
+            todoApp.views.eventList.sort()
           }
-          self.$el.html(self.addmore(d))
-          self.event = new Event(res)
-          $('.app-view').html(todoApp.views.eventList.render().$el)
-          todoApp.collections.events.add(self.event)
-          todoApp.views.eventList.sort()
-        }
       }
 
       var startTime = data.timeMin.format()
@@ -296,7 +297,8 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
       request = gapi.client.request(requestContent)
       Backbone.gapiRequest(request, 'create', this.model, options)
 
-    }, /*
+    },
+    /*
      * Returns the start dateTime of an event
      *
      * @param Object start
@@ -316,8 +318,8 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
      */
     getDuration: function(start, end) {
       var startTime = new moment(start.dateTime),
-              endTime = new moment(end.dateTime)
-      return endTime.diff(startTime, 'minutes') + "M"
+        endTime = new moment(end.dateTime)
+        return endTime.diff(startTime, 'minutes') + "M"
 
     }
   })

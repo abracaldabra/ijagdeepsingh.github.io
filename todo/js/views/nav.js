@@ -4,8 +4,7 @@ define(['text!templates/nav.html'], function(navTemplate) {
     el: $('#nav'),
     // Cache the templates
     template: _.template(navTemplate),
-    initialize: function() {
-    },
+    initialize: function() {},
     render: function() {
       this.$el.html(this.template())
       return this

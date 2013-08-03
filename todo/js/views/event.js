@@ -63,8 +63,8 @@ define(['text!templates/event.html', 'moment'], function(template) {
      */
     getDuration: function(start, end) {
       var startTime = new moment(start.date || start.dateTime),
-              endTime = new moment(end.date || end.dateTime)
-      return endTime.diff(startTime, 'minutes') + "M"
+        endTime = new moment(end.date || end.dateTime)
+        return endTime.diff(startTime, 'minutes') + "M"
 
     },
     /*

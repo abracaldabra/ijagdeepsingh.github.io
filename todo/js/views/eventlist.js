@@ -8,7 +8,7 @@ define(['views/event'], function(EventView) {
     },
     render: function() {
       var $el = $(this.el),
-              self = this
+        self = this
 
       return this
     },
