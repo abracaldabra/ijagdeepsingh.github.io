@@ -153,18 +153,18 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
     /*
      * Checks the validation of time and duraction of event
      * according to time constraints
-     * For ex. schedule events only between 9-12 to 1-6
+     * For ex. schedule events only between 9-12 to 1-6 and mon-fri
      *
      * @params moment time
      * @params number duration
      */
     checkTimeConstraints: function(time, duration) {
+      time = this.checkDay(time)
+
       var h = time.hours(),
         m = time.minutes()
         time.seconds(0)
         time.milliseconds(0)
-
-        time = this.checkDay(time)
 
         if (h < 9) { // time is before 9
           // set time at 9:00
@@ -237,11 +237,15 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
      */
     checkDay: function(time) {
       if (time.days() === 6) {
-        console.log('Saturday. Set to Monday')
+        console.log('Saturday. Set to Monday 9am')
         time.days(8)
+        time.hours(9)
+        time.minutes(0)
       } else if (time.days() === 0) {
-        console.log('Sunday. Set to Monday')
+        console.log('Sunday. Set to Monday 9am')
         time.days(8)
+        time.hours(9)
+        time.minutes(0)
       }
       return time
     },
