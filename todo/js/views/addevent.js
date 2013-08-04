@@ -243,7 +243,7 @@ define(['text!templates/addevent.html', 'text!templates/addmore.html', 'models/e
         time.minutes(0)
       } else if (time.days() === 0) {
         console.log('Sunday. Set to Monday 9am')
-        time.days(8)
+        time.days(1)
         time.hours(9)
         time.minutes(0)
       }
