@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Dhol Radio</title>
+    <meta charset='utf-8'>
+    <meta content='IE=edge, chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='width=device-width' name='viewport'>
+    <meta name="description" content="Dhol radio 24/7 live online punjabi radio." />
+    <meta name="keywords" content="dhol,radio" />
+    <meta name="robots" content="all,index,follow" />
+    <meta name="author" content="Dhol Radio Inc." />
+	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/flat-ui.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!--loading circle player-->
+    <link rel="stylesheet" href="circleplayer/css/not.the.skin.css">
+    <link rel="stylesheet" href="circleplayer/circle.skin/circle.player.css">
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="circleplayer/js/jquery.transform2d.js"></script>
+    <script type="text/javascript" src="circleplayer/js/jquery.grab.js"></script>
+    <script type="text/javascript" src="circleplayer/js/jquery.jplayer.js"></script>
+    <script type="text/javascript" src="circleplayer/js/mod.csstransforms.min.js"></script>
+    <script type="text/javascript" src="circleplayer/js/circle.player.js"></script>
+    <script type="text/javascript">
+		function init() {
+			//start status update thread
+			updateStatus();
+			//player stuff starts here
+			var myCirclePlayer = new CirclePlayer("#jquery_jplayer",
+			 {
+			   mp3: "http://gill.sukhpal.net:8000/;"
+			 }, {
+			cssSelectorAncestor: "#cp_container",
+			swfPath: "circleplayer/js/",
+			supplied: "mp3",
+			wmode: "window"
+			});
+		}
+		
+		function updateStatus(){
+			$.ajax({
+				type: 'GET',
+				url: "http://dholradio.org/status_json.php",
+				processData: true,
+				data: {},
+				dataType: "json",
+				success: function (data) {
+				processData(data);
+				}
+			});
+			var intervalID = window.setTimeout(function(){updateStatus()}, 30000);
+		}
+
+		function processData(data){
+			//Do some stuff with the data
+			$('.current-song').html("<strong>Now playing: </strong>" + data.song_title);
+			$('.current-rj').html("<strong>RJ: </strong>" + data.rj);
+			$('.current-listeners').html("<strong>Online listeners: </strong>" + data.current_listeners);
+		}
+    </script>
+  </head>
+  <body onload="init();">
+    <div id="jquery_jplayer" class="cp-jplayer"></div>
+    <header>
+      <div class="container">
+        <hgroup class="pull-left">
+          <h1 class="pull-left"><a href="#">Dhol Radio</a></h1>
+          <h3 class="pull-left">live 24/7 punjabi radio</h3>
+        </hgroup>
+        <nav class="user-navigation">
+          <div class="container">
+            <ul>
+              <li><a href="http://sikhradio.com" target="_blank">Sikh Radio</a></li>
+              <li><a href="http://dholtv.in" target="_blank">Dhol TV</a></li>
+              <li><a href="http://109.230.217.133/" target="_blank">Recordings</a></li>
+              <li><a href="./forum/index.php/topic,61.0.html">Listen On Phone</a></li>
+            </ul>
+          </div>
+        </nav>
+        <nav class="navigation pull-right">
+          <ul class="clearfix">
+            <li><a href="./mail">Song Request</a></li>
+            <li><a href="./forum">Forum</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="pop-stripe"></div>
+    </header>
+    <section class="content container">
+      <div class="row">
+        <div class="span8">
+			<div class="clearfix">
+				<h1>Thank you for listening Dhol radio.</h1>
+				<div class="status">
+					<p class="current-song"></p>
+					<p class="current-rj"></p>
+					<p class="current-listeners"></p>
+				</div>
+			</div>
+			<div class="player clearfix">
+			  <div id="cp_container" class="cp-container pull-left">
+				<div class="cp-buffer-holder">
+				  <div class="cp-buffer-1"></div>
+				  <div class="cp-buffer-2"></div>
+				</div>
+				<div class="cp-progress-holder">
+				  <div class="cp-progress-1"></div>
+				  <div class="cp-progress-2"></div>
+				</div>
+				<div class="cp-circle-control"></div>
+				<ul class="cp-controls">
+				  <li><a class="cp-play" tabindex="1">play</a></li>
+				  <li><a class="cp-pause" style="display:none;" tabindex="1">pause</a></li>
+				</ul>
+			  </div>
+			  <div id="cp_container" class="pull-left">
+				<div class="jp-current-time"></div>
+			  </div>
+			</div>
+        </div>
+        <div class="span4">
+          <div class="live-calls pull-left">
+            <h2>Live Calls</h2>
+            <table class="table">
+              <tr><td>U.S.A</td><td>+1-951-824-6365</td></tr>
+              <tr><td>U.K</td><td>+44-020-3286-0165</td></tr>
+              <tr><td>Canada</td><td>+1-604-210-1955</td></tr>
+              <tr><td>Australia</td><td>+61-07-3040-2165</td></tr>
+              <tr><td>New Zealand</td><td>+64-9889-1165</td></tr>
+              <tr><td>Poland</td><td>(61)-625-5165</td></tr>
+              <tr><td>Skype</td><td>dholradio.org</td></tr>
+              <tr><td>Listen by Call</td><td>USA 702-489-0211</td></tr>
+              <tr><td>Listen By call</td><td>UK +44-20-3519-1210 </td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="contentinfo">
+      <nav class="connect-navigation">
+        <div class="container clearfix">
+          <ul class="pull-left links">
+            <li><a href="./help">help</a></li>
+            <li><a href="./blog">blog</a></li>
+          </ul>
+          <ul class="pull-right social">
+            <li><a href="https://twitter.com/dhol_radio" target="_blank">@dhol_radio</a></li>
+            <li><a href="https://www.facebook.com/dholradio" target="_blank">Find us on Facebook</a></li>
+          </ul>
+        </div>
+      </nav>
+      <nav class="copyright">
+        <div class="container">
+          <p class="pull-right"><small>Designed by: <a href="http://ijagdeep.com">Jagdeep Singh</a></small></p>
+          <p><small>Copyright &copy 2011-2013. All rights reserved.</small></p>
+          <p><small><a href="./forum/index.php/topic,680.0.html">Privacy Policy</a></small></p>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+  </body>
+</html>
