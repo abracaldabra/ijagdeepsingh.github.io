@@ -1,0 +1,28 @@
+body {
+    background-color: #c0392b;
+    color: white;
+}
+.hero-unit {
+    padding: 0px;
+    margin-top: 20px;
+    font-size: 30px;
+    line-height: 60px;
+    background-color: transparent;
+}
+.hero-unit h1 {
+    font-size: 100px;
+    font-weight: 200;
+}
+.hero-unit p {
+    font-weight: 400;
+}
+a {
+    color: white;
+    text-decoration: none;
+    padding-bottom: 5px;
+    border-bottom: 1px #fff dashed;
+}
+a:hover {
+    background-color: yellow;
+    border-bottom-color: #fff;
+}
